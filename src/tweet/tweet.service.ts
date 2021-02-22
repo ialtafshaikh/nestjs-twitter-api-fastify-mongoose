@@ -26,4 +26,12 @@ export class TweetService {
   async getTweetById(id: string): Promise<Tweet> {
     return await this.tweetModel.findOne({ tweetId: id }).exec();
   }
+
+  async updateTweetById(id: string, tweet: CreateTweetDto): Promise<Tweet> {
+    return await this.tweetModel.findOneAndUpdate(
+      { tweetId: id },
+      { message: tweet.message },
+      { new: true, useFindAndModify: false },
+    );
+  }
 }
