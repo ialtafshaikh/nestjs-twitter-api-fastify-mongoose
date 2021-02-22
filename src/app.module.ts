@@ -5,12 +5,14 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { TweetModule } from './tweet/tweet.module';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(`${process.env.DB_URL}`),
     TweetModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
