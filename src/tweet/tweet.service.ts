@@ -22,4 +22,8 @@ export class TweetService {
     const createdTweet = new this.tweetModel(tweet);
     return await createdTweet.save();
   }
+
+  async getTweetById(id: string): Promise<Tweet> {
+    return await this.tweetModel.findOne({ tweetId: id }).exec();
+  }
 }
