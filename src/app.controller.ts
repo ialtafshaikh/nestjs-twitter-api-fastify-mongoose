@@ -2,10 +2,14 @@ import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/ocal-auth.guard';
+import { AuthService } from './auth/auth.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private authService: AuthService,
+  ) {}
 
   @Get()
   getHello(): string {
@@ -15,6 +19,6 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
-    return req.user;
+    return this.authService.login(req.user);
   }
 }
