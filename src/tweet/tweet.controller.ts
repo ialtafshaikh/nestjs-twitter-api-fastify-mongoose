@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 
 import { TweetService } from './tweet.service';
 import { Tweet } from './interfaces/tweet.interface';
@@ -29,5 +37,10 @@ export class TweetController {
     @Body() tweet: CreateTweetDto,
   ): Promise<Tweet> {
     return this.tweetService.updateTweetById(id, tweet);
+  }
+
+  @Delete(':tweetId')
+  async deleteTweetById(@Param('tweetId') id: string) {
+    return this.tweetService.deleteTweetById(id);
   }
 }

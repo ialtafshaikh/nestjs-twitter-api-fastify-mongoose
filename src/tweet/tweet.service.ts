@@ -34,4 +34,8 @@ export class TweetService {
       { new: true, useFindAndModify: false },
     );
   }
+
+  async deleteTweetById(id: string) {
+    return await this.tweetModel.findOneAndRemove({ tweetId: id });
+  }
 }
