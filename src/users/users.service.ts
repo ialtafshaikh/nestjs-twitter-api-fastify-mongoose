@@ -9,7 +9,8 @@ export class UsersService {
   constructor(
     @InjectModel('Users') private readonly usersModel: Model<Users>,
   ) {}
-  async findOne(username: string) {
-    return username;
+
+  async findUser(username: string) {
+    return await this.usersModel.findOne({ username: username }).exec();
   }
 }
