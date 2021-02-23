@@ -13,18 +13,22 @@ export class TweetService {
   ) {}
 
   async getAllTweets(user): Promise<Tweet[]> {
-    return await this.tweetModel.find({ author: user.userId }).exec();
+    return await this.tweetModel
+      .find({ author: user.userId }, '-_id -__v')
+      .exec();
   }
 
   async createTweet(tweet: CreateTweetDto, user) {
     tweet['tweetId'] = uuidv4();
     tweet['author'] = user.userId;
     const createdTweet = new this.tweetModel(tweet);
-    return await createdTweet.save();
+    const result = await createdTweet.save();
+    const { _id, __v, ...newTweet } = result['_doc'];
+    return newTweet;
   }
 
   async getTweetById(id: string): Promise<Tweet> {
-    return await this.tweetModel.findOne({ tweetId: id }).exec();
+    return await this.tweetModel.findOne({ tweetId: id }, '-_id -__v').exec();
   }
 
   async updateTweetById(
@@ -46,10 +50,17 @@ export class TweetService {
     return result;
   }
 
-  async deleteTweetById(id: string) {
-    return await this.tweetModel.findOneAndRemove(
-      { tweetId: id },
-      { useFindAndModify: false },
+  async deleteTweetById(id: string, user) {
+    const result = await this.tweetModel.findOneAndRemove(
+      {
+        tweetId: id,
+        author: user.userId,
+      },
+      { projection: { _id: 0, __v: 0 }, useFindAndModify: false },
     );
+    if ((await result) === null) {
+      return JSON.stringify({ message: 'Operation Not Allowed' });
+    }
+    return result;
   }
 }
