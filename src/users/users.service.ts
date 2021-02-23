@@ -11,10 +11,4 @@ export class UsersService {
   async findUser(username: string) {
     return await this.usersModel.findOne({ username: username }).exec();
   }
-
-  // async addUser(body){
-  //   const createduser = new this.tweModel(tweet);
-  //   return await createdTweet.save();
-  //   return
-  // }
 }

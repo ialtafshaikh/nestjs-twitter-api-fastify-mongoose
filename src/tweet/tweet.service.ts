@@ -12,13 +12,13 @@ export class TweetService {
     @InjectModel('Tweet') private readonly tweetModel: Model<Tweet>,
   ) {}
 
-  async getAllTweets(): Promise<Tweet[]> {
-    return await this.tweetModel.find().exec();
+  async getAllTweets(user): Promise<Tweet[]> {
+    return await this.tweetModel.find({ author: user.userId }).exec();
   }
 
-  async createTweet(tweet: CreateTweetDto) {
+  async createTweet(tweet: CreateTweetDto, user) {
     tweet['tweetId'] = uuidv4();
-    tweet['author'] = 'altaf';
+    tweet['author'] = user.userId;
     const createdTweet = new this.tweetModel(tweet);
     return await createdTweet.save();
   }

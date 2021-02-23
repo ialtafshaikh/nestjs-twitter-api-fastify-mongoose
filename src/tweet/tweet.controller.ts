@@ -22,13 +22,13 @@ export class TweetController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getAllTweets(@Request() req): Promise<Tweet[]> {
-    // console.log('auth user', req.user);
-    return this.tweetService.getAllTweets();
+    return this.tweetService.getAllTweets(req.user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async createTweet(@Body() tweet: CreateTweetDto) {
-    return this.tweetService.createTweet(tweet);
+  async createTweet(@Body() tweet: CreateTweetDto, @Request() req) {
+    return this.tweetService.createTweet(tweet, req.user);
   }
 
   @Get(':tweetId')
