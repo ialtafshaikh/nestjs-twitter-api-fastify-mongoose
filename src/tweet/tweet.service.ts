@@ -45,8 +45,11 @@ export class TweetService {
         useFindAndModify: false,
       },
     );
-    if ((await result) === null) {
-      return JSON.stringify({ message: 'Operation Not Allowed' });
+    if (result === null) {
+      return JSON.stringify({
+        message: 'Operation Not Allowed',
+        status: 'unsuccessful',
+      });
     }
     return result;
   }
@@ -59,9 +62,16 @@ export class TweetService {
       },
       { projection: { _id: 0, __v: 0 }, useFindAndModify: false },
     );
-    if ((await result) === null) {
-      return JSON.stringify({ message: 'Operation Not Allowed' });
+    if (result === null) {
+      return JSON.stringify({
+        message: 'Operation Not Allowed',
+        status: 'unsuccessful',
+      });
     }
-    return result;
+    return {
+      message: 'Tweet deleted successfully',
+      status: 'success',
+      result: result,
+    };
   }
 }
