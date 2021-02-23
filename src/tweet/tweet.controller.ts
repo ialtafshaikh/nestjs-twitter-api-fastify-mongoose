@@ -31,17 +31,20 @@ export class TweetController {
     return this.tweetService.createTweet(tweet, req.user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':tweetId')
   async getTweetById(@Param('tweetId') id: string): Promise<Tweet> {
     return this.tweetService.getTweetById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':tweetId')
   async updateTweetById(
     @Param('tweetId') id: string,
     @Body() tweet: CreateTweetDto,
-  ): Promise<Tweet> {
-    return this.tweetService.updateTweetById(id, tweet);
+    @Request() req,
+  ): Promise<Tweet | string> {
+    return this.tweetService.updateTweetById(id, tweet, req.user);
   }
 
   @Delete(':tweetId')

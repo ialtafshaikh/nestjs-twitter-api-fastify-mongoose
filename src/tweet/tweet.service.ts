@@ -27,12 +27,23 @@ export class TweetService {
     return await this.tweetModel.findOne({ tweetId: id }).exec();
   }
 
-  async updateTweetById(id: string, tweet: CreateTweetDto): Promise<Tweet> {
-    return await this.tweetModel.findOneAndUpdate(
-      { tweetId: id },
+  async updateTweetById(
+    id: string,
+    tweet: CreateTweetDto,
+    user,
+  ): Promise<Tweet | string> {
+    const result = await this.tweetModel.findOneAndUpdate(
+      { tweetId: id, author: user.userId },
       { message: tweet.message },
-      { new: true, useFindAndModify: false },
+      {
+        fields: { _id: 0, __v: 0 },
+        useFindAndModify: false,
+      },
     );
+    if ((await result) === null) {
+      return JSON.stringify({ message: 'Operation Not Allowed' });
+    }
+    return result;
   }
 
   async deleteTweetById(id: string) {
