@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Tweet } from './interfaces/tweet.interface';
 import { CreateTweetDto } from './dto/createTweet.dto';
+import { AuthUserDto } from '../users/dto/authUser.dto';
 
 @Injectable()
 export class TweetService {
@@ -12,13 +13,13 @@ export class TweetService {
     @InjectModel('Tweet') private readonly tweetModel: Model<Tweet>,
   ) {}
 
-  async getAllTweets(user): Promise<Tweet[]> {
+  async getAllTweets(user: AuthUserDto): Promise<Tweet[]> {
     return await this.tweetModel
       .find({ author: user.userId }, '-_id -__v')
       .exec();
   }
 
-  async createTweet(tweet: CreateTweetDto, user) {
+  async createTweet(tweet: CreateTweetDto, user: AuthUserDto): Promise<Tweet> {
     tweet['tweetId'] = uuidv4();
     tweet['author'] = user.userId;
     const createdTweet = new this.tweetModel(tweet);
@@ -34,7 +35,7 @@ export class TweetService {
   async updateTweetById(
     id: string,
     tweet: CreateTweetDto,
-    user,
+    user: AuthUserDto,
   ): Promise<Tweet | string> {
     const result = await this.tweetModel.findOneAndUpdate(
       { tweetId: id, author: user.userId },
@@ -50,7 +51,7 @@ export class TweetService {
     return result;
   }
 
-  async deleteTweetById(id: string, user) {
+  async deleteTweetById(id: string, user: AuthUserDto) {
     const result = await this.tweetModel.findOneAndRemove(
       {
         tweetId: id,

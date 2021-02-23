@@ -21,13 +21,16 @@ export class TweetController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllTweets(@Request() req): Promise<Tweet[]> {
+  async getAllTweets(@Request() req: any): Promise<Tweet[]> {
     return this.tweetService.getAllTweets(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createTweet(@Body() tweet: CreateTweetDto, @Request() req) {
+  async createTweet(
+    @Body() tweet: CreateTweetDto,
+    @Request() req: any,
+  ): Promise<Tweet> {
     return this.tweetService.createTweet(tweet, req.user);
   }
 
@@ -42,14 +45,14 @@ export class TweetController {
   async updateTweetById(
     @Param('tweetId') id: string,
     @Body() tweet: CreateTweetDto,
-    @Request() req,
+    @Request() req: any,
   ): Promise<Tweet | string> {
     return this.tweetService.updateTweetById(id, tweet, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':tweetId')
-  async deleteTweetById(@Param('tweetId') id: string, @Request() req) {
+  async deleteTweetById(@Param('tweetId') id: string, @Request() req: any) {
     return this.tweetService.deleteTweetById(id, req.user);
   }
 }
