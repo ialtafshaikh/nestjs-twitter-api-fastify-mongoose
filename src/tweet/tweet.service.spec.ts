@@ -73,6 +73,7 @@ describe('TweetService', () => {
             findOne: jest.fn(),
             findOneAndUpdate: jest.fn(),
             create: jest.fn(),
+            update: jest.fn(),
             findOneAndRemove: jest.fn(),
             exec: jest.fn(),
           },
@@ -136,5 +137,24 @@ describe('TweetService', () => {
     const findMockTweet = mockTweet();
     const foundTweet = await tweetService.getTweetById(mockTweet().tweetId);
     expect(foundTweet).toEqual(findMockTweet);
+  });
+
+  it.skip('should update the tweet message using tweetId', async () => {
+    jest.spyOn(tweetModel, 'findOneAndUpdate').mockReturnValue({
+      exec: jest.fn().mockResolvedValueOnce({
+        message: 'user mock tweet updated',
+      }),
+    } as any);
+    const updatedTweet = await tweetService.updateTweetById(
+      mockTweet().tweetId,
+      {
+        message: 'user mock tweet updated',
+      },
+      mockUser,
+    );
+    console.log(updatedTweet);
+    expect(updatedTweet).toEqual({
+      message: 'user mock tweet updated',
+    });
   });
 });
