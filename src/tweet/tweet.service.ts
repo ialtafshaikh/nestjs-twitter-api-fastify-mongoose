@@ -22,10 +22,11 @@ export class TweetService {
   async createTweet(tweet: CreateTweetDto, user: AuthUserDto): Promise<Tweet> {
     tweet['tweetId'] = uuidv4();
     tweet['author'] = user.userId;
-    const createdTweet = new this.tweetModel(tweet);
-    const result = await createdTweet.save();
-    const { _id, __v, ...newTweet } = result['_doc'];
-    return newTweet;
+    // const createdTweet = new ;
+    const result = await this.tweetModel.create(tweet);
+    // console.log(result);
+    // const { _id, __v, ...newTweet } = result['_doc'];
+    return result;
   }
 
   async getTweetById(id: string): Promise<Tweet> {
