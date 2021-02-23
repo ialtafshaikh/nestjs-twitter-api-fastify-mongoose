@@ -30,7 +30,9 @@ export class AuthService {
 
   async signup(user: UserDto) {
     user['userId'] = uuidv4();
-    const createduser = new this.usersService.usersModel(user);
-    return await createduser.save();
+    const createdUser = new this.usersService.usersModel(user);
+    const result = await createdUser.save();
+    const { _id, __v, createdAt, updatedAt, ...newUser } = result['_doc'];
+    return newUser;
   }
 }
