@@ -157,4 +157,40 @@ describe('TweetService', () => {
       message: 'user mock tweet updated',
     });
   });
+
+  it('should update the tweet message using tweetId', async () => {
+    const TweetFindOneAndUpdateMock = jest.spyOn(
+      tweetModel,
+      'findOneAndUpdate',
+    );
+    TweetFindOneAndUpdateMock.mockReturnValue(mockTweet() as any);
+
+    const updatedTweet = await tweetService.updateTweetById(
+      mockTweet().tweetId,
+      {
+        message: 'user tweet updated again',
+      },
+      mockUser,
+    );
+    expect(updatedTweet).toEqual(mockTweet());
+  });
+
+  it('should delete the tweet using tweetId', async () => {
+    const TweetFindOneAndRemoveMock = jest.spyOn(
+      tweetModel,
+      'findOneAndRemove',
+    );
+    TweetFindOneAndRemoveMock.mockReturnValue(mockTweet() as any);
+
+    const deletedTweet = await tweetService.deleteTweetById(
+      mockTweet().tweetId,
+      mockUser,
+    );
+
+    expect(deletedTweet).toEqual({
+      message: 'Tweet deleted successfully',
+      status: 'success',
+      result: mockTweet(),
+    });
+  });
 });
