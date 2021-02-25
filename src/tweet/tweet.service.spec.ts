@@ -139,25 +139,6 @@ describe('TweetService', () => {
     expect(foundTweet).toEqual(findMockTweet);
   });
 
-  it.skip('should update the tweet message using tweetId', async () => {
-    jest.spyOn(tweetModel, 'findOneAndUpdate').mockReturnValue({
-      exec: jest.fn().mockResolvedValueOnce({
-        message: 'user mock tweet updated',
-      }),
-    } as any);
-    const updatedTweet = await tweetService.updateTweetById(
-      mockTweet().tweetId,
-      {
-        message: 'user mock tweet updated',
-      },
-      mockUser,
-    );
-    console.log(updatedTweet);
-    expect(updatedTweet).toEqual({
-      message: 'user mock tweet updated',
-    });
-  });
-
   it('should update the tweet message using tweetId', async () => {
     const TweetFindOneAndUpdateMock = jest.spyOn(
       tweetModel,
