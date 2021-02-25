@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../users/users.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { Users } from '../../dist/users/interfaces/users.interface.d';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
@@ -22,11 +22,6 @@ const mockReturnUser = {
   userId: 'e2d3cca3-c580-4098-8bb1-6f96363017f8',
 };
 
-const mockToken = {
-  access_token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsdGFmIiwic3ViIjoiZTJkM2NjYTMtYzU4MC00MDk4LThiYjEtNmY5NjM2MzAxN2Y4IiwiaWF0IjoxNjE0MDUxODY2LCJleHAiOjE2MTQxMzgyNjZ9.HV7WZQeHP5r_XASWY3kqjeZ0LhvhKL87IeZiy0Q9o4I',
-};
-
 const mockSignupuser = {
   username: 'altaf',
   password: 'password',
@@ -34,7 +29,6 @@ const mockSignupuser = {
 
 describe('AuthService', () => {
   let authService: AuthService;
-  let usersService: UsersService;
   let usersModel: Model<Users>;
 
   beforeEach(async () => {
@@ -71,7 +65,6 @@ describe('AuthService', () => {
 
     usersModel = module.get<Model<Users>>(getModelToken('Users')); // The getModelFunction just appends 'Model' to the Model name
     authService = module.get<AuthService>(AuthService);
-    usersService = module.get<UsersService>(UsersService);
   });
 
   it('auth service should be defined', () => {
