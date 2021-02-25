@@ -86,7 +86,7 @@ describe('TweetService', () => {
     // tweetController = module.get<TweetController>(TweetController);
   });
 
-  it('service should be defined', () => {
+  it('tweet service should be defined', () => {
     expect(tweetService).toBeDefined();
   });
 

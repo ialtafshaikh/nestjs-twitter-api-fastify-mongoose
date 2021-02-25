@@ -35,4 +35,8 @@ export class AuthService {
     const { _id, __v, createdAt, updatedAt, ...newUser } = result['_doc'];
     return newUser;
   }
+
+  async verifyToken(token: string) {
+    return await this.jwtService.verifyAsync(token);
+  }
 }
