@@ -11,7 +11,10 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(`${process.env.DB_URL}`),
+    MongooseModule.forRoot(`${process.env.DB_URL}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }),
     TweetModule,
     AuthModule,
     UsersModule,
