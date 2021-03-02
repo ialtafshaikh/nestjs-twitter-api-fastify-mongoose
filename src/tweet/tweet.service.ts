@@ -36,7 +36,16 @@ export class TweetService {
   }
 
   async getTweetById(id: string): Promise<Tweet> {
-    return await this.tweetModel.findOne({ tweetId: id }, '-_id -__v').exec();
+    const tweet = await this.tweetModel
+      .findOne({ tweetId: id }, '-_id -__v')
+      .exec();
+    if (!tweet) {
+      throw new ThrowErrorResponse(
+        'Invalid Tweet Id, No tweet Found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return tweet;
   }
 
   async updateTweetById(
