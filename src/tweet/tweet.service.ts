@@ -79,11 +79,12 @@ export class TweetService {
       },
       { projection: { _id: 0, __v: 0 }, useFindAndModify: false },
     );
+
     if (result === null) {
-      return JSON.stringify({
-        message: 'Operation Not Allowed',
-        status: 'unsuccessful',
-      });
+      throw new ThrowErrorResponse(
+        'Operation Not Allowed',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
     return {
       message: 'Tweet deleted successfully',

@@ -53,6 +53,7 @@ export class TweetController {
   @UseGuards(JwtAuthGuard)
   @Delete(':tweetId')
   async deleteTweetById(@Param('tweetId') id: string, @Request() req: any) {
+    console.log('recived ', id);
     return this.tweetService.deleteTweetById(id, req.user);
   }
 }
