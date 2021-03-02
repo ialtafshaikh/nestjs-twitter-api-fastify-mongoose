@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { UserDto } from '../users/dto/createUser.dto';
+import { CreateUserDto } from '../users/dto/createUser.dto';
 import { ThrowErrorResponse } from '../users/exception/throwError.exception';
 
 @Injectable()
@@ -15,11 +15,21 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findUser(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
+
+    if (user === null) {
+      throw new ThrowErrorResponse(
+        'Invalid Username, User Not Found',
+        HttpStatus.NOT_FOUND,
+      );
     }
-    return null;
+    if (user.password !== pass) {
+      throw new ThrowErrorResponse(
+        'Incorrect Password',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const { password, ...result } = user;
+    return result;
   }
 
   async login(user: any) {
@@ -29,7 +39,7 @@ export class AuthService {
     };
   }
 
-  async signup(user: UserDto) {
+  async signup(user: CreateUserDto) {
     user['userId'] = uuidv4();
     const createdUser = new this.usersService.usersModel(user);
     let result;
