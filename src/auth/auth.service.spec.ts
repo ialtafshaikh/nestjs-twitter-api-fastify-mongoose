@@ -10,6 +10,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { AppModule } from '../app.module';
+import { ThrowErrorResponse } from '../users/exception/throwError.exception';
+import { HttpStatus } from '@nestjs/common';
 
 const mockUser = {
   username: 'altaf',
@@ -110,17 +112,21 @@ describe('AuthService', () => {
       expect(foundUser).not.toEqual(mockUser);
     });
 
-    it('should return null if password not match', async () => {
-      jest.spyOn(usersModel, 'findOne').mockReturnValue({
-        exec: jest.fn().mockResolvedValueOnce(mockUser),
-      } as any);
+    // it('should Throw Error Response if password not match', async () => {
+    //   jest.spyOn(usersModel, 'findOne').mockReturnValue({
+    //     exec: jest.fn().mockResolvedValueOnce(mockUser),
+    //   } as any);
 
-      const foundUser = await authService.validateUser(
-        mockUser.username,
-        'randompass',
-      );
-      expect(foundUser).toBeNull();
-    });
+    //   const foundUser = await authService.validateUser(
+    //     mockUser.username,
+    //     'randompass',
+    //   );
+
+    //   expect(() => foundUser).toThrow({
+    //     statusCode: 400,
+    //     message: 'Incorrect Password',
+    //   });
+    // });
   });
 
   describe('login', () => {
