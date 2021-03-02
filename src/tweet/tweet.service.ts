@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Tweet } from './interfaces/tweet.interface';
 import { CreateTweetDto } from './dto/createTweet.dto';
 import { AuthUserDto } from '../users/dto/authUser.dto';
+import { ThrowErrorResponse } from '../users/exception/throwError.exception';
 
 @Injectable()
 export class TweetService {
@@ -22,8 +23,15 @@ export class TweetService {
   async createTweet(tweet: CreateTweetDto, user: AuthUserDto): Promise<Tweet> {
     tweet['tweetId'] = uuidv4();
     tweet['author'] = user.userId;
-    const result = await this.tweetModel.create(tweet);
-
+    let result;
+    try {
+      result = await this.tweetModel.create(tweet);
+    } catch (Exception) {
+      throw new ThrowErrorResponse(
+        'Unable To Create Tweet At the Moment, kindly try again after sometimes',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
     return result;
   }
 
