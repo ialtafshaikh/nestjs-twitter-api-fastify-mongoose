@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../users/dto/createUser.dto';
+import { ThrowErrorResponse } from '../users/exception/throwError.exception';
 
 @Injectable()
 export class AuthService {
@@ -31,7 +32,22 @@ export class AuthService {
   async signup(user: UserDto) {
     user['userId'] = uuidv4();
     const createdUser = new this.usersService.usersModel(user);
-    const result = await createdUser.save();
+    let result;
+    try {
+      result = await createdUser.save();
+    } catch (Exception) {
+      if (Exception.code === 11000) {
+        return new ThrowErrorResponse(
+          'Username Already Exists',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      return new ThrowErrorResponse(
+        'Unable to signup',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
     const { _id, __v, createdAt, updatedAt, ...newUser } = result['_doc'];
     return newUser;
   }
