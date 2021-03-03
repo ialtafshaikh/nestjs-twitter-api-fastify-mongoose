@@ -64,7 +64,7 @@ git clone https://github.com/ialtafshaikh/nestjs-twitter-api-fastify-mongoose.gi
 
 ```
 JWT_SECRET=any random string
-DB_URL=mongodb+srv://altafshaikh:Awsed69@cluster0.wimdj.mongodb.net/nestApp?retryWrites=true&w=majority
+DB_URL=mongodb+srv://<username>:<password>@cluster0.wimdj.mongodb.net/<database_name>?retryWrites=true&w=majority
 ```
 
 Sample for local
