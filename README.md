@@ -68,6 +68,27 @@ DB_URL=mongodb+srv://<username>:<password>@cluster0.wimdj.mongodb.net/<database_
 
 ```
 
+## Supported Routes (Endpoints)
+
+```
+
+/auth/signup : (method:post) - create user accout
+
+/auth/login : (method:post) - get jwt token and authenticate yourself using the creds (username,password)
+
+/api/v1/tweets : (method:get) - to get all user tweets
+
+/api/v1/tweets : (method:post) - to create tweet
+
+/api/v1/tweets/:tweetId : (method:get) - to get a single tweet using tweetId
+
+/api/v1/tweets/:tweetId : (method:patch) - to update tweet ``message`` of a tweet using tweetId
+
+/api/v1/tweets/:tweetId : (method:delete) -  to delete tweet using tweetId
+
+
+```
+
 ## Running the app
 
 ```bash
@@ -93,3 +114,11 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Deployment
+
+To Host the Project I had used **Heroku Platform**.
+
+## Live Demo of this Project
+
+[hosted backend server]()
