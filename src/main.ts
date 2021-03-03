@@ -13,6 +13,7 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT || 3000);
