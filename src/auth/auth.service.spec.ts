@@ -14,18 +14,18 @@ import { ThrowErrorResponse } from '../users/exception/throwError.exception';
 import { HttpStatus } from '@nestjs/common';
 
 const mockUser = {
-  username: 'altaf2',
+  username: 'altaf3',
   userId: 'e2d3cca3-c580-4098-8bb1-6f96363017f8',
   password: 'password',
 };
 
 const mockReturnUser = {
-  username: 'altaf2',
+  username: 'altaf3',
   userId: 'e2d3cca3-c580-4098-8bb1-6f96363017f8',
 };
 
 const mockSignupuser = {
-  username: 'altaf2',
+  username: 'altaf3',
   password: 'password',
 };
 
@@ -168,6 +168,7 @@ describe('AuthService', () => {
     });
 
     it('should signup and return new user', async () => {
+      jest.spyOn(authService, 'signup').mockReturnValue(mockSignupuser as any);
       const newUser = await authService.signup(mockSignupuser);
       expect(newUser.username).toBe(mockUser.username);
       expect(newUser.password).toBe(mockUser.password);
