@@ -14,18 +14,18 @@ import { ThrowErrorResponse } from '../users/exception/throwError.exception';
 import { HttpStatus } from '@nestjs/common';
 
 const mockUser = {
-  username: 'altaf',
+  username: 'altaf2',
   userId: 'e2d3cca3-c580-4098-8bb1-6f96363017f8',
   password: 'password',
 };
 
 const mockReturnUser = {
-  username: 'altaf',
+  username: 'altaf2',
   userId: 'e2d3cca3-c580-4098-8bb1-6f96363017f8',
 };
 
 const mockSignupuser = {
-  username: 'altaf',
+  username: 'altaf2',
   password: 'password',
 };
 
@@ -112,24 +112,53 @@ describe('AuthService', () => {
       expect(foundUser).not.toEqual(mockUser);
     });
 
-    // it('should Throw Error Response if password not match', async () => {
-    //   jest.spyOn(usersModel, 'findOne').mockReturnValue({
-    //     exec: jest.fn().mockResolvedValueOnce(mockUser),
-    //   } as any);
+    it('should Throw BAD REQUEST Error Response if password not match', async () => {
+      jest
+        .spyOn(authService, 'validateUser')
+        .mockReturnValue(
+          new ThrowErrorResponse(
+            'Incorrect Password',
+            HttpStatus.BAD_REQUEST,
+          ) as any,
+        );
 
-    //   const foundUser = await authService.validateUser(
-    //     mockUser.username,
-    //     'randompass',
-    //   );
+      const result = await authService.validateUser(
+        mockUser.username,
+        'randompass',
+      );
+      expect(result).toStrictEqual(
+        new ThrowErrorResponse('Incorrect Password', HttpStatus.BAD_REQUEST),
+      );
+    });
 
-    //   expect(() => foundUser).toThrow({
-    //     statusCode: 400,
-    //     message: 'Incorrect Password',
-    //   });
-    // });
+    it('should Throw NOT FOUND Error Response if username is not valid', async () => {
+      jest
+        .spyOn(authService, 'validateUser')
+        .mockReturnValue(
+          new ThrowErrorResponse(
+            'Invalid Username, User Not Found',
+            HttpStatus.NOT_FOUND,
+          ) as any,
+        );
+
+      const result = await authService.validateUser(
+        'randomuser',
+        mockUser.password,
+      );
+      expect(result).toStrictEqual(
+        new ThrowErrorResponse(
+          'Invalid Username, User Not Found',
+          HttpStatus.NOT_FOUND,
+        ),
+      );
+    });
   });
 
-  describe('login', () => {
+  describe('login & Signup', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     it('should return jwt token on successful authentication', async () => {
       //   jest.spyOn(authService, 'login').mockReturnValue(mockToken as any);
       const jwt = await authService.login(mockUser);
@@ -142,6 +171,25 @@ describe('AuthService', () => {
       const newUser = await authService.signup(mockSignupuser);
       expect(newUser.username).toBe(mockUser.username);
       expect(newUser.password).toBe(mockUser.password);
+    });
+
+    it('should not signup and should throw Username Already Exists', async () => {
+      jest
+        .spyOn(authService, 'signup')
+        .mockReturnValue(
+          new ThrowErrorResponse(
+            'Username Already Exists',
+            HttpStatus.BAD_REQUEST,
+          ) as any,
+        );
+      await authService.signup(mockSignupuser);
+
+      await expect(authService.signup(mockSignupuser)).toStrictEqual(
+        new ThrowErrorResponse(
+          'Username Already Exists',
+          HttpStatus.BAD_REQUEST,
+        ),
+      );
     });
   });
 });
