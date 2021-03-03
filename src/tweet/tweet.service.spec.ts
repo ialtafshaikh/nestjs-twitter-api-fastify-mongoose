@@ -4,6 +4,8 @@ import { TweetController } from './tweet.controller';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 import { Tweet } from './interfaces/tweet.interface';
+import { ThrowErrorResponse } from '../users/exception/throwError.exception';
+import { HttpStatus } from '@nestjs/common';
 
 const mockUser = {
   username: 'altaf',
@@ -130,6 +132,26 @@ describe('TweetService', () => {
     });
   });
 
+  it('should not create Tweet and should throw Unable To Create Tweet', async () => {
+    jest
+      .spyOn(tweetService, 'createTweet')
+      .mockReturnValue(
+        new ThrowErrorResponse(
+          'Unable To Create Tweet At the Moment, kindly try again after sometimes',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        ) as any,
+      );
+
+    const result = await tweetService.createTweet(mockTweet(), mockUser);
+
+    expect(result).toStrictEqual(
+      new ThrowErrorResponse(
+        'Unable To Create Tweet At the Moment, kindly try again after sometimes',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      ),
+    );
+  });
+
   it('should get single tweet by id', async () => {
     jest.spyOn(tweetModel, 'findOne').mockReturnValue({
       exec: jest.fn().mockResolvedValueOnce(mockTweet()),
@@ -137,6 +159,27 @@ describe('TweetService', () => {
     const findMockTweet = mockTweet();
     const foundTweet = await tweetService.getTweetById(mockTweet().tweetId);
     expect(foundTweet).toEqual(findMockTweet);
+  });
+
+  it('should not return tweet and should throw Error Invalid Tweet ID', async () => {
+    jest.spyOn(tweetModel, 'findOne').mockReturnValue({
+      exec: jest
+        .fn()
+        .mockResolvedValueOnce(
+          new ThrowErrorResponse(
+            'Invalid Tweet Id, No tweet Found',
+            HttpStatus.NOT_FOUND,
+          ),
+        ),
+    } as any);
+
+    const result = await tweetService.getTweetById(mockTweet().tweetId + '1');
+    expect(result).toStrictEqual(
+      new ThrowErrorResponse(
+        'Invalid Tweet Id, No tweet Found',
+        HttpStatus.NOT_FOUND,
+      ),
+    );
   });
 
   it('should update the tweet message using tweetId', async () => {
@@ -156,6 +199,28 @@ describe('TweetService', () => {
     expect(updatedTweet).toEqual(mockTweet());
   });
 
+  it('should not update tweet and should throw Error Operation Not Allowed', async () => {
+    const TweetFindOneAndUpdateMock = jest.spyOn(
+      tweetModel,
+      'findOneAndUpdate',
+    );
+    TweetFindOneAndUpdateMock.mockReturnValue(
+      new ThrowErrorResponse(
+        'Operation Not Allowed',
+        HttpStatus.UNAUTHORIZED,
+      ) as any,
+    );
+    const tweet = tweetArray[2];
+    const result = await tweetService.updateTweetById(
+      tweet.tweetId,
+      tweet,
+      mockUser,
+    );
+    expect(result).toStrictEqual(
+      new ThrowErrorResponse('Operation Not Allowed', HttpStatus.UNAUTHORIZED),
+    );
+  });
+
   it('should delete the tweet using tweetId', async () => {
     const TweetFindOneAndRemoveMock = jest.spyOn(
       tweetModel,
@@ -173,5 +238,26 @@ describe('TweetService', () => {
       status: 'success',
       result: mockTweet(),
     });
+  });
+
+  it('should not delete the tweet and should throw Error Operation Not Allowed', async () => {
+    const TweetFindOneAndRemoveMock = jest.spyOn(
+      tweetModel,
+      'findOneAndRemove',
+    );
+    TweetFindOneAndRemoveMock.mockReturnValue(
+      new ThrowErrorResponse(
+        'Operation Not Allowed',
+        HttpStatus.UNAUTHORIZED,
+      ) as any,
+    );
+    const response = await tweetService.deleteTweetById(
+      tweetArray[2].tweetId,
+      mockUser,
+    );
+
+    expect(response.result).toStrictEqual(
+      new ThrowErrorResponse('Operation Not Allowed', HttpStatus.UNAUTHORIZED),
+    );
   });
 });
