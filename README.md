@@ -34,6 +34,13 @@ Twitter REST API Backend build on NestJs uses Fastify HTTP and Mongooose ORM
 - user can login and get their JWT token to authorized themselves
 - Passport.js is used for Authentication and Authorization
 - verify JWT token (authozrization) using Passport
+- get the list of all the tweets of authenticated user
+- create a tweet
+- store data to mongoDB using atlas
+- get tweet using tweet Id
+- delete tweet using tweet Id
+- update tweet using tweet Id
+- Unit testing of tweetService, userServce and AuthService is done
 
 ## Additional Features
 
