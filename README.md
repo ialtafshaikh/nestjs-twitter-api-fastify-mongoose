@@ -128,7 +128,6 @@ To Host the Project I had used **Heroku Platform**.
 
 ## Live Demo of this Project
 
-[hosted backend server]()
 
 ## Author
 
