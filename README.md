@@ -129,3 +129,13 @@ To Host the Project I had used **Heroku Platform**.
 ## Live Demo of this Project
 
 [hosted backend server]()
+
+## Author
+
+- **Altaf Shaikh** - _work by_ - [ialtafshaikh](https://github.com/ialtafshaikh)
+
+![altaf shaikh](https://raw.githubusercontent.com/ialtafshaikh/static-files/master/coollogo_com-327551664.png)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
