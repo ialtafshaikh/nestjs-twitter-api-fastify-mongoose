@@ -65,7 +65,7 @@ export class TweetService {
     if (result === null) {
       throw new ThrowErrorResponse(
         'Operation Not Allowed',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.FORBIDDEN,
       );
     }
     return result;
@@ -83,7 +83,7 @@ export class TweetService {
     if (result === null) {
       throw new ThrowErrorResponse(
         'Operation Not Allowed',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.FORBIDDEN,
       );
     }
     return {

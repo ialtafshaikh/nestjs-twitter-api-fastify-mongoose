@@ -207,7 +207,7 @@ describe('TweetService', () => {
     TweetFindOneAndUpdateMock.mockReturnValue(
       new ThrowErrorResponse(
         'Operation Not Allowed',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.FORBIDDEN,
       ) as any,
     );
     const tweet = tweetArray[2];
@@ -217,7 +217,7 @@ describe('TweetService', () => {
       mockUser,
     );
     expect(result).toStrictEqual(
-      new ThrowErrorResponse('Operation Not Allowed', HttpStatus.UNAUTHORIZED),
+      new ThrowErrorResponse('Operation Not Allowed', HttpStatus.FORBIDDEN),
     );
   });
 
@@ -248,7 +248,7 @@ describe('TweetService', () => {
     TweetFindOneAndRemoveMock.mockReturnValue(
       new ThrowErrorResponse(
         'Operation Not Allowed',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.FORBIDDEN,
       ) as any,
     );
     const response = await tweetService.deleteTweetById(
@@ -257,7 +257,7 @@ describe('TweetService', () => {
     );
 
     expect(response.result).toStrictEqual(
-      new ThrowErrorResponse('Operation Not Allowed', HttpStatus.UNAUTHORIZED),
+      new ThrowErrorResponse('Operation Not Allowed', HttpStatus.FORBIDDEN),
     );
   });
 });
