@@ -22,11 +22,24 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+# Twitter API Backend Using NEST JS
+
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Twitter REST API Backend build on NestJs uses Fastify HTTP and Mongooose ORM
 
-## Installation
+## Features
+
+- user can signup
+- user can login and get their JWT token to authorized themselves
+- Passport.js is used for Authentication and Authorization
+- verify JWT token (authozrization) using Passport
+
+## Additional Features
+
+- hosted on heroku platform
+
+## Project Dependencies Installation
 
 ```bash
 $ npm install
@@ -57,17 +70,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
