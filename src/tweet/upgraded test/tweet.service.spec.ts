@@ -22,4 +22,9 @@ describe('Tweet Service', () => {
     tweetService = module.get<TweetService>(TweetService);
     tweetModel = module.get<Model<Tweet>>(getModelToken('Tweet')); // The getModelFunction just appends 'Model' to the Model name
   });
+
+  it('tweet service & model should be defined', () => {
+    expect(tweetService).toBeDefined();
+    expect(tweetModel).toBeDefined();
+  });
 });
