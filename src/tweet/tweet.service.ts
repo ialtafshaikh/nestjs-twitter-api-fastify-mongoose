@@ -10,6 +10,7 @@ import { ThrowErrorResponse } from '../users/exception/throwError.exception';
 
 @Injectable()
 export class TweetService {
+  // injection using token
   constructor(
     @InjectModel('Tweet') private readonly tweetModel: Model<Tweet>,
   ) {}

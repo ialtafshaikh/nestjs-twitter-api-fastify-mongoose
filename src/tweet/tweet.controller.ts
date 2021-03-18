@@ -17,6 +17,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('api/v1/tweets')
 export class TweetController {
+  // injection using constructor => this will declare and instantiate the TweetService at the same place
   constructor(private readonly tweetService: TweetService) {}
 
   @UseGuards(JwtAuthGuard)
